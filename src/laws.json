@@ -1,0 +1,18 @@
+[
+  {
+    "keywords": [
+      "driving without license",
+      "unlicensed driving"
+    ],
+    "law": "Motor Vehicles Act Section 3/181",
+    "penalty": "Fine up to ₹5000 and/or imprisonment up to 3 months"
+  },
+  {
+    "keywords": [
+      "shoplifting",
+      "stealing from store"
+    ],
+    "law": "IPC Section 379",
+    "penalty": "Imprisonment up to 3 years or fine or both"
+  }
+]
