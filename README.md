@@ -128,3 +128,5 @@ Whoever commits theft shall be punished...
 ## Disclaimer
 
 This project is intended for educational and informational purposes only. It is not legal advice and should not be relied upon as a substitute for consultation with a qualified legal professional.
+
+Fuzzy matching usually gets the right results, although big emphasis on "usually", So until I find a way to implement a RAG bot or a better search system into this, Fuzzy will have to do.
