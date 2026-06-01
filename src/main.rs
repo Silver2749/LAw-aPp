@@ -1,32 +1,40 @@
 use fuzzy_matcher::FuzzyMatcher;
 use fuzzy_matcher::skim::SkimMatcherV2;
-use serde::Deserialize;
+use serde::{Deserialize, Deserializer};
 use std::fs;
 use std::io;
 
 #[derive(Debug, Deserialize)]
 struct Law {
-    keywords: Vec<String>,
-    law: String,
-    penalty: String,
+    chapter: u32,
+    chapter_title: String,
+
+    #[serde(rename = "Section", deserialize_with = "deserialize_section")]
+    section: String,
+
+    section_title: String,
+    section_desc: String,
 }
 
-fn keyword_score(input: &str, keyword: &str) -> usize {
-    let input_words: Vec<&str> = input.split_whitespace().collect();
-    let keyword_words: Vec<&str> = keyword.split_whitespace().collect();
+fn deserialize_section<'de, D>(deserializer: D) -> Result<String, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let value = serde_json::Value::deserialize(deserializer)?;
 
-    keyword_words
-        .iter()
-        .filter(|word| input_words.contains(word))
-        .count()
+    match value {
+        serde_json::Value::String(s) => Ok(s),
+        serde_json::Value::Number(n) => Ok(n.to_string()),
+        _ => Err(serde::de::Error::custom("Expected string or number")),
+    }
 }
 
 fn main() {
-    let data = fs::read_to_string("src/laws.json").expect("Failed to read laws.json");
+    let data = fs::read_to_string("ipc.json").expect("Failed to read JSON");
 
     let laws: Vec<Law> = serde_json::from_str(&data).expect("Invalid JSON");
 
-    println!("Enter an activity:");
+    println!("Describe an activity:");
 
     let mut input = String::new();
 
@@ -34,45 +42,43 @@ fn main() {
         .read_line(&mut input)
         .expect("Failed to read input");
 
-    let input = input.trim().to_lowercase();
+    let query = input.trim().to_lowercase();
 
     let matcher = SkimMatcherV2::default();
 
-    let mut best_score = 0;
-    let mut best_match = None;
+    let mut results = Vec::new();
 
     for law in &laws {
-        for keyword in &law.keywords {
-            if let Some(score) = matcher.fuzzy_match(&input, keyword) {
-                if score > best_score {
-                    best_score = score;
-                    best_match = Some(law);
-                }
-            }
+        let title_score = matcher
+            .fuzzy_match(&law.section_title.to_lowercase(), &query)
+            .unwrap_or(0);
+
+        let desc_score = matcher
+            .fuzzy_match(&law.section_desc.to_lowercase(), &query)
+            .unwrap_or(0);
+
+        let score = title_score.max(desc_score);
+
+        if score > 30 {
+            results.push((score, law));
         }
     }
-    let mut best_score = 0;
-    let mut best_match = None;
 
-    for law in &laws {
-        for keyword in &law.keywords {
-            let score = keyword_score(&input, keyword);
+    results.sort_by(|a, b| b.0.cmp(&a.0));
 
-            if score > best_score {
-                best_score = score;
-                best_match = Some(law);
-            }
-        }
+    if results.is_empty() {
+        println!("No matching laws found.");
+        return;
     }
-    match best_match {
-        Some(law) if best_score > 0 => {
-            println!("\nPossible Match Found");
-            println!("Law Broken: {}", law.law);
-            println!("Penalty: {}", law.penalty);
-            println!("Score: {}", best_score);
-        }
-        _ => {
-            println!("No matching law found.");
-        }
+
+    println!("\nTop Matches:");
+
+    for (score, law) in results.iter().take(5) {
+        println!("\n========================");
+        println!("Confidence: {}", score);
+        println!("Section {}", law.section);
+        println!("Title: {}", law.section_title);
+        println!("Chapter: {}", law.chapter_title);
+        println!("\n{}", law.section_desc);
     }
 }
