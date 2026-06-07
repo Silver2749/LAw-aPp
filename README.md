@@ -259,15 +259,6 @@ This involved:
 * Vector database integration
 * Support for Bharatiya Nyaya Sanhita (BNS)
 
----
-
-## Disclaimer
-
-This project is intended for educational and informational purposes only.
-
-It does not provide legal advice and should not be used as a substitute for consultation with a qualified legal professional.
-
----
 
 
 
