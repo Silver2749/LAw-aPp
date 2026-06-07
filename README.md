@@ -259,6 +259,10 @@ This involved:
 * Vector database integration
 * Support for Bharatiya Nyaya Sanhita (BNS)
 
+## 👤 Author
+
+[Silver2749/Shane Braganza](https://github.com/Silver2749)
+
 
 
 
