@@ -1,80 +1,179 @@
-# LawApp - IPC Legal Search Engine in Rust
+# ⚠️ Disclaimer
 
-## Overview
+This project is intended **solely for educational, research, and software development purposes**. It was created to explore concepts in **Rust programming, information retrieval and semantic search.
 
-LawApp is a Rust-based legal search engine that helps users identify potentially relevant sections of the Indian Penal Code (IPC) based on a natural language description of an activity.
+The information provided by this application **does not constitute legal advice** and should not be relied upon for making legal decisions. The search results are generated algorithmically and may be incomplete, inaccurate, or fail to account for the specific facts and circumstances of a situation.
 
-The project loads a structured IPC dataset in JSON format and uses fuzzy matching to compare user input against section titles and legal descriptions. It then returns the most relevant legal provisions along with their corresponding section numbers and descriptions.
+Users must **not misuse this project for unlawful activities, legal evasion, or any purpose that could facilitate criminal conduct**. The author does not endorse or encourage illegal behavior of any kind.
 
-This project serves as a foundation for a future Retrieval-Augmented Generation (RAG) legal assistant capable of understanding natural language and providing contextual legal information.
+If you require legal guidance or assistance, **consult a qualified legal professional or the appropriate legal authority**.
+
+By using this software, you acknowledge that it is provided for educational purposes only and that you assume full responsibility for how you use the information it produces.
+
+---
+# LawApp - Semantic Legal Search Engine
+
+A Rust-based semantic legal search engine that allows users to describe an activity in natural language and retrieves the most relevant sections of the Indian Penal Code (IPC) using transformer embeddings and vector similarity search.
+
+This project was built to explore the intersection of backend engineering, information retrieval, data engineering, and AI while learning more about Rust.
+
+---
 
 ## Features
 
-* IPC dataset stored in JSON format
-* Fast search using Rust
-* Fuzzy matching with typo tolerance
-* Search across section titles and descriptions
-* Displays top matching legal provisions
-* Modular architecture for future AI and RAG integration
+* Semantic search using embeddings
+* Natural language legal queries
+* IPC knowledge base stored as JSON
+* Transformer-based text embeddings
+* Vector similarity search using cosine similarity
+* Structured and modular Rust codebase
+* Foundation for future RAG integration
+
+---
+
+## Example
+
+### Input
+
+```text
+Describe an activity:
+
+I stole a motorcycle from a parking lot
+```
+
+### Output
+
+```text
+Top Matches
+
+Similarity: 0.942
+
+Section 379
+Punishment for theft
+
+Whoever commits theft shall be punished...
+
+--------------------------------
+
+Similarity: 0.861
+
+Section 380
+Theft in dwelling house...
+```
+
+---
+
+## How It Works
+
+```text
+IPC JSON Dataset
+        │
+        ▼
+Embedding Generation
+        │
+        ▼
+embedded_ipc.json
+        │
+        ▼
+User Query
+        │
+        ▼
+Generate Query Embedding
+        │
+        ▼
+Cosine Similarity Search
+        │
+        ▼
+Top Matching IPC Sections
+```
+
+---
 
 ## Tech Stack
 
 * Rust
 * Serde
 * Serde JSON
-* Fuzzy Matcher (SkimMatcherV2)
+* FastEmbed
+* Transformer Embeddings
+* Vector Similarity Search
+
+---
 
 ## Project Structure
 
 ```text
 lawapp/
-├── Cargo.toml
+│
+├── src/
+│   ├── main.rs
+│   ├── models.rs
+│   ├── embed.rs
+│   └── search.rs
+│
 ├── ipc.json
-└── src/
-    └── main.rs
+├── embedded_ipc.json
+├── Cargo.toml
+├── Cargo.lock
+├── README.md
+└── LICENSE
 ```
 
-## Dataset Format
-
-Example IPC entry:
-
-```json
-{
-  "chapter": 1,
-  "chapter_title": "introduction",
-  "Section": "1",
-  "section_title": "Title and extent of operation of the Code",
-  "section_desc": "This Act shall be called the Indian Penal Code..."
-}
-```
+---
 
 ## Installation
 
-### Clone Repository
+### Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/yourusername/lawapp.git
+
 cd lawapp
 ```
 
-### Install Dependencies
+### Install Rust
 
-Rust dependencies are managed through Cargo.
+https://www.rust-lang.org/tools/install
+
+Verify installation:
 
 ```bash
-cargo build
+rustc --version
+cargo --version
 ```
 
-## Running the Application
+---
 
-Place the IPC dataset file in the project root:
+## Dependencies
+
+```toml
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+fastembed = "5.16.0"
+```
+
+---
+
+## Running the Project
+
+### Generate Embeddings
+
+If embeddings have not been generated:
+
+```bash
+cargo run
+```
+
+This creates:
 
 ```text
-lawapp/
-├── ipc.json
-├── Cargo.toml
-└── src/
+embedded_ipc.json
 ```
+
+containing vector representations of every IPC section.
+
+### Search
 
 Run the application:
 
@@ -82,51 +181,93 @@ Run the application:
 cargo run
 ```
 
+Enter a natural language description of an activity when prompted.
+
 Example:
 
 ```text
-Describe an activity:
-theft
+I hacked into someone's computer
+
+I kidnapped a child
+
+I stole a bicycle
+
+I threatened someone with a weapon
 ```
 
-Output:
+The application returns the most semantically relevant IPC sections.
 
-```text
-Section 379
-Title: Punishment for theft
-Chapter: Offences Against Property
+---
 
-Whoever commits theft shall be punished...
-```
+## Challenges Faced
+
+One of the biggest challenges during development was data preparation.
+
+Rather than relying on an existing dataset, a custom parser was built to process official IPC documents and convert legal text into machine-readable JSON.
+
+This involved:
+
+* Parsing legal documents
+* Cleaning noisy text
+* Handling duplicate entries
+* Structuring hundreds of IPC sections
+* Resolving inconsistent schemas
+* Supporting both numeric and alphanumeric section identifiers
+
+---
+
+## Skills Demonstrated
+
+### Backend Engineering
+
+* Rust
+* Modular architecture
+* File I/O
+* Error handling
+
+### Data Engineering
+
+* JSON processing
+* Data parsing
+* Data cleaning
+* Schema normalization
+
+### Information Retrieval
+
+* Semantic search
+* Embeddings
+* Vector similarity
+* Cosine similarity
+
+### AI Foundations
+
+* Transformer embeddings
+* Knowledge base construction
+* Retrieval pipelines
+* RAG architecture fundamentals
+
+---
 
 ## Future Roadmap
 
-### Phase 1
-
-* JSON-based legal search
-* Fuzzy matching
-* CLI interface
-
-### Phase 2
-
-* Improved search ranking
-* Keyword extraction
-* Penalty extraction
-
-### Phase 3
-
-* Embeddings
-* Vector database integration
-* Semantic search
-
-### Phase 4
-
-* RAG-powered legal assistant
-* Natural language explanations
+* Improve search ranking
+* Hybrid search (Embeddings + BM25)
+* Retrieval-Augmented Generation (RAG)
+* LLM integration
+* REST API
 * Web interface
+* Vector database integration
+* Support for Bharatiya Nyaya Sanhita (BNS)
+
+---
 
 ## Disclaimer
 
-This project is intended for educational and informational purposes only. It is not legal advice and should not be relied upon as a substitute for consultation with a qualified legal professional.
+This project is intended for educational and informational purposes only.
 
-Fuzzy matching usually gets the right results, although big emphasis on "usually", So until I find a way to implement a RAG bot or a better search system into this, Fuzzy will have to do.
+It does not provide legal advice and should not be used as a substitute for consultation with a qualified legal professional.
+
+---
+
+
+
