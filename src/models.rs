@@ -1,5 +1,5 @@
 use serde::{Deserialize, Deserializer, Serialize};
-
+#[allow(dead_code)]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Law {
     pub chapter: u32,
