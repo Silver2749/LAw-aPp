@@ -1,6 +1,6 @@
 # ⚠️ Disclaimer
 
-This project is intended **solely for educational, research, and software development purposes**. It was created to explore concepts in **Rust programming, information retrieval and semantic search.
+This project is intended **solely for educational, research, and software development purposes**. It was created to explore concepts in Rust programming, information retrieval and semantic search.
 
 The information provided by this application **does not constitute legal advice** and should not be relied upon for making legal decisions. The search results are generated algorithmically and may be incomplete, inaccurate, or fail to account for the specific facts and circumstances of a situation.
 
