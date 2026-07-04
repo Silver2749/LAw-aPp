@@ -27,7 +27,7 @@ const DATASET = [
   {
     Section: 378,
     section_title: 'Theft',
-    section_desc: 'Whoever, intending to take dishonestly any movable property out of the possession of any person without that person's consent, moves that property in order to such taking, is said to commit theft.'
+    section_desc: "Whoever, intending to take dishonestly any movable property out of the possession of any person without that person's consent, moves that property in order to such taking, is said to commit theft."
   },
   {
     Section: 379,
