@@ -18,7 +18,7 @@ pub fn cosine_similarity(a: &[f32], b: &[f32]) -> f32 {
     dot / (norm_a.sqrt() * norm_b.sqrt())
 }
 
-pub fn search(query: String, laws: &Vec<EmbeddedLaw>) {
+pub fn search_laws(query: String, laws: &Vec<EmbeddedLaw>) -> Vec<SearchResult> {
     let mut model =
         TextEmbedding::try_new(InitOptions::new(EmbeddingModel::AllMiniLML6V2)).unwrap();
 
@@ -36,16 +36,27 @@ pub fn search(query: String, laws: &Vec<EmbeddedLaw>) {
 
     scores.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
 
+    scores.iter().take(5).map(|(score, law)| SearchResult {
+        similarity: *score,
+        section: law.section.clone(),
+        title: law.title.clone(),
+        description: law.description.clone(),
+    }).collect()
+}
+
+pub fn search(query: String, laws: &Vec<EmbeddedLaw>) {
+    let results = search_laws(query, laws);
+
     println!("\nTop Matches:\n");
 
-    for (score, law) in scores.iter().take(5) {
-        println!("Similarity: {:.3}", score,);
+    for result in results {
+        println!("Similarity: {:.3}", result.similarity);
 
-        println!("Section {}", law.section,);
+        println!("Section {}", result.section);
 
-        println!("{}", law.title,);
+        println!("{}", result.title);
 
-        println!("{}", law.description,);
+        println!("{}", result.description);
 
         println!("--------------------------------");
     }

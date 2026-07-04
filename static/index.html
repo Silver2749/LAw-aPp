@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Law Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚖️ Law Search</h1>
+            <p class="subtitle">Find relevant laws based on your query</p>
+        </div>
+
+        <div class="search-section">
+            <form id="searchForm" class="search-form">
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Describe an activity or situation..."
+                        required
+                    >
+                    <button type="submit" class="search-btn">
+                        <span>Search</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Searching laws...</p>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+
+        <div id="results" class="results hidden">
+            <h2>Top Matching Laws</h2>
+            <div id="resultsList" class="results-list"></div>
+        </div>
+
+        <div id="noResults" class="no-results hidden">
+            <p>No results found. Try a different query.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

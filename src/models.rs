@@ -20,6 +20,14 @@ pub struct EmbeddedLaw {
     pub embedding: Vec<f32>,
 }
 
+#[derive(Serialize)]
+pub struct SearchResult {
+    pub similarity: f32,
+    pub section: String,
+    pub title: String,
+    pub description: String,
+}
+
 fn deserialize_section<'de, D>(deserializer: D) -> Result<String, D::Error>
 where
     D: Deserializer<'de>,
