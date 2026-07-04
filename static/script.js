@@ -21,7 +21,7 @@ async function performSearch(query) {
     showLoading();
 
     try {
-        const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
+        const response = await fetch(`/.netlify/functions/search?query=${encodeURIComponent(query)}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
